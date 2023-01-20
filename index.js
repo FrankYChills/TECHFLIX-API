@@ -16,6 +16,7 @@ connectDB();
 
 // handling reqs via router aka custom middleware
 app.use("/api/auth", require("./routes/authRoute"));
+app.use("/api/users", require("./routes/userRoute"));
 
 mongoose.connection.once("open", () => {
   console.log("Connected to mongodb server ✅");
