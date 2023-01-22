@@ -63,7 +63,7 @@ router.delete("/:id", verifyJWT, async (req, res) => {
   }
 });
 
-//GET
+//GET SINGLE
 // OPEN
 //params - id
 router.get("/find/:id", async (req, res) => {
@@ -81,7 +81,7 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
-//GET
+//GET ALL
 // Protected
 // Only Admins
 router.get("", verifyJWT, async (req, res) => {
@@ -102,4 +102,70 @@ router.get("", verifyJWT, async (req, res) => {
   }
 });
 
+// GET user Stats
+// OPEN
+router.get("/stats", async (req, res) => {
+  try {
+    const data = await User.aggregate([
+      {
+        // grab month from createdAt attribute from each entry
+        // 2023-01-20T07 - 1 ,2023-02-20T07 - 2
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+        //
+      },
+      // count number of 1s,2s ....12s ans sum up with key as month that is 1 or 2 -> 1 - 10,2-5 etc
+      {
+        $group: { _id: "$month", total: { $sum: 1 } },
+      },
+    ]);
+    res.status(201).json({ data: data });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error while getting user stats" });
+  }
+});
+
 module.exports = router;
+
+// const today = new Date();
+
+// const lastYear = today.getFullYear() - 1;
+// const months = [
+//   "January",
+//   "February",
+//   "March",
+//   "April",
+//   "May",
+//   "June",
+//   "July",
+//   "August",
+//   "September",
+//   "October",
+//   "November",
+//   "December",
+// ];
+// const users = await User.find();
+// let userCdatesM = users.map(
+//   (user) => months[new Date(user.createdAt).getMonth()]
+// );
+// console.log(userCdatesM);
+// try {
+//   var monthToUser = {
+//     January: 0,
+//     February: 0,
+//     March: 0,
+//     April: 0,
+//     May: 0,
+//     June: 0,
+//     July: 0,
+//     August: 0,
+//     September: 0,
+//     October: 0,
+//     November: 0,
+//     December: 0,
+//   };
+//   userCdatesM.map((month) => (monthToUser[month] += 1));
+//   res.status(201).json({ data: [monthToUser] });
+// }

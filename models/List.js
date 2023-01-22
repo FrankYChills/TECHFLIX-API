@@ -6,6 +6,7 @@ const ListSchema = new mongoose.Schema(
     // movie or series
     type: { type: String },
     genre: { type: String },
+    // movie ids
     content: { type: Array },
   },
   {
