@@ -120,7 +120,7 @@ router.get("/stats", async (req, res) => {
         $group: { _id: "$month", total: { $sum: 1 } },
       },
     ]);
-    res.status(201).json({ data: data });
+    res.status(200).json({ data: data });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error while getting user stats" });

@@ -93,7 +93,7 @@ router.get("/random", verifyJWT, async (req, res) => {
       ]);
     }
 
-    res.status(201).json(movie);
+    res.status(200).json({ data: movie });
   } catch (err) {
     res.status(500).json({ message: "Error while fetching a movie" });
   }

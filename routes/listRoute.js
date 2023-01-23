@@ -76,7 +76,7 @@ router.get("", verifyJWT, async (req, res) => {
       // get 10 random lists
       list = await List.aggregate([{ $sample: { size: 10 } }]);
     }
-    return res.status(201).json({ data: list });
+    return res.status(200).json({ data: list });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error while getting lists" });
