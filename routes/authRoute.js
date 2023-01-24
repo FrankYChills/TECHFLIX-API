@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
       { expiresIn: "7d" }
     );
     res
-      .status(201)
+      .status(200)
       .json({ message: "Success", data: { ...otherInfo, accessToken } });
   } catch (err) {
     console.log(err);

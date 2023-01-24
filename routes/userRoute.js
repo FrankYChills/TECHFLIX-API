@@ -90,7 +90,7 @@ router.get("", verifyJWT, async (req, res) => {
   try {
     if (req.user.isAdmin) {
       const users = query
-        ? await User.find().sort({ _id: -1 }).limit(10)
+        ? await User.find().sort({ _id: -1 }).limit(5)
         : await User.find().sort({ _id: -1 });
       res.status(201).json({ data: users });
     } else {
