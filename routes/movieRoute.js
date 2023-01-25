@@ -105,7 +105,7 @@ router.get("", verifyJWT, async (req, res) => {
   if (req.user.isAdmin) {
     try {
       const movies = await Movie.find();
-      res.status(201).json({ data: movies });
+      res.status(200).json({ data: movies });
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: "Error while fetching all movies" });
