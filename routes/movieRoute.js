@@ -37,7 +37,7 @@ router.put("/:id", verifyJWT, async (req, res) => {
       );
       res
         .status(201)
-        .json({ message: "Movie updated successfully", body: updatedMovie });
+        .json({ message: "Movie updated successfully", data: updatedMovie });
     } catch (err) {
       res.status(500).json({ message: "Error while updating a movie" });
     }
@@ -68,7 +68,7 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 router.get("/find/:id", verifyJWT, async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
-    res.status(201).json(movie);
+    res.status(200).json(movie);
   } catch (err) {
     res.status(500).json({ message: "Error while fetching a movie" });
   }

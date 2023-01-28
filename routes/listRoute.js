@@ -50,6 +50,29 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 // GET ALL
 // Protected
 
+// UPDATE/PUT
+// Protected / Only Admin
+// params - id
+
+router.put("/:id", verifyJWT, async (req, res) => {
+  if (req.user.isAdmin) {
+    try {
+      const updatedList = await List.findByIdAndUpdate(
+        req.params.id,
+        { $push: { content: req.body.movieId } },
+        { new: true }
+      );
+      res
+        .status(201)
+        .json({ message: "List updated successfully", data: updatedList });
+    } catch (err) {
+      res.status(500).json({ message: "Error while updating a List" });
+    }
+  } else {
+    res.status(500).json({ message: "You do not have permission to update" });
+  }
+});
+
 router.get("", verifyJWT, async (req, res) => {
   // get lists via type and genre
   //   no type - homepage , type-movie -> movie page etc
