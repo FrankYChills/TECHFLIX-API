@@ -7,6 +7,11 @@ const jwt = require("jsonwebtoken");
 
 // REGISTER
 router.post("/register", async (req, res) => {
+  const user = await User.findOne({ email: req.body.email }).exec();
+  if (user) {
+    return res.status(401).json({ message: "User Already Exists" });
+  }
+
   // create a new user
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = {
@@ -17,7 +22,19 @@ router.post("/register", async (req, res) => {
 
   try {
     const user = await User.create(newUser);
-    res.status(201).json(user);
+    // generate access token after user has been created
+    // create jwt access token
+    const accessToken = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
+    const { password, ...otherInfo } = user._doc;
+
+    res.status(201).json({
+      message: "User created succesfully",
+      data: { ...otherInfo, accessToken },
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
