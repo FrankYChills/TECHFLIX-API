@@ -57,16 +57,29 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 router.put("/:id", verifyJWT, async (req, res) => {
   if (req.user.isAdmin) {
     try {
-      const updatedList = await List.findByIdAndUpdate(
-        req.params.id,
-        { $push: { content: req.body.movieId } },
-        { new: true }
-      );
+      let updatedList;
+      if (req.body.type == "push") {
+        updatedList = await List.findByIdAndUpdate(
+          req.params.id,
+          { $push: { content: req.body.movieId } },
+          { new: true }
+        );
+      } else {
+        updatedList = await List.findByIdAndUpdate(
+          req.params.id,
+          {
+            $pull: { content: req.body.movieId },
+          },
+          { new: true }
+        );
+      }
+
       res
         .status(201)
         .json({ message: "List updated successfully", data: updatedList });
     } catch (err) {
       res.status(500).json({ message: "Error while updating a List" });
+      console.log(err);
     }
   } else {
     res.status(500).json({ message: "You do not have permission to update" });
