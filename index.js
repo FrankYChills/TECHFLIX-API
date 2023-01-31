@@ -10,6 +10,15 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3500;
 
+//get the logger middleware and use that
+const { logger, logEvents } = require("./middleware/logger");
+// this middleware logs any requests coming to the server
+app.use(logger);
+
+//get the error handler middleware and use that(at last)
+// whenever any error is encountered this middleware logs error
+const errorHandler = require("./middleware/errorhandler");
+
 // allow cors
 app.use(cors());
 
@@ -24,6 +33,9 @@ app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/users", require("./routes/userRoute"));
 app.use("/api/movies", require("./routes/movieRoute"));
 app.use("/api/lists", require("./routes/listRoute"));
+
+//handles error in the server
+app.use(errorHandler);
 
 mongoose.connection.once("open", () => {
   console.log("Connected to mongodb server ✅");
