@@ -17,7 +17,7 @@ app.use(logger);
 
 //get the error handler middleware and use that(at last)
 // whenever any error is encountered this middleware logs error
-const errorHandler = require("./middleware/errorhandler");
+const errorHandler = require("./middleware/errorHandler");
 
 // allow cors
 app.use(cors());
