@@ -20,7 +20,9 @@ const verifyJWT = (req, res, next) => {
     if (err) {
       return res
         .status(403)
-        .json({ message: "Unauthorized | Invalid Access Token" });
+        .json({
+          message: "Unauthorized | Invalid Access Expired! Please Login Again",
+        });
     }
     // set req user as decoded data from jwt
     req.user = decoded;

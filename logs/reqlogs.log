@@ -3675,3 +3675,4 @@
 20230131	20:57:21	c98c7bcb-bc99-4b53-b366-1a0b9ad075f7	OPTIONS	/api/users?new=true	undefined
 20230131	20:57:21	95d81fc8-0822-4197-a8e6-62127bc79d42	GET	/api/users/stats	undefined
 20230131	20:57:21	dd98fdf4-06b0-4a95-bcb5-5f60ec985b6d	GET	/api/users?new=true	undefined
+20230207	11:14:38	c84c0246-fb49-4774-912a-804efdc3265c	GET	/api/lists	undefined
