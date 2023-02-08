@@ -19,13 +19,29 @@ router.put("/:id", verifyJWT, async (req, res) => {
       if (req.body.password) {
         req.body.password = bcrypt.hash(req.body.password, 10);
       }
-      const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-          $set: req.body,
-        },
-        { new: true }
-      );
+      let updatedUser;
+      if (req.body.type == "push") {
+        updatedUser = await User.findByIdAndUpdate(
+          req.params.id,
+          { $push: { favourites: req.body.movieId } },
+          { new: true }
+        );
+      } else if (req.body.type == "pop") {
+        updatedUser = await User.findByIdAndUpdate(
+          req.params.id,
+          { $pull: { favourites: req.body.movieId } },
+          { new: true }
+        );
+      } else {
+        console.log("hehe");
+        updatedUser = await User.findByIdAndUpdate(
+          req.params.id,
+          {
+            $set: req.body,
+          },
+          { new: true }
+        );
+      }
       const { password, ...otherInfo } = updatedUser._doc;
       res
         .status(201)
